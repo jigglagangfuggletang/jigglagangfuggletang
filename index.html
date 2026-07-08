@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm awesome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    background: #0b0c10;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124,58,237,0.35), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    filter: blur(10px);
+  }
+
+  .stage {
+    perspective: 900px;
+    z-index: 1;
+  }
+
+  h1 {
+    font-size: clamp(48px, 12vw, 160px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: center;
+    background: linear-gradient(100deg, #7C3AED, #06B6D4, #7C3AED);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 6s linear infinite;
+    transition: transform 0.15s ease-out;
+    will-change: transform;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .caption {
+    text-align: center;
+    margin-top: 18px;
+    font-size: clamp(12px, 1.6vw, 16px);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    font-weight: 400;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    h1, .glow { animation: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="grid"></div>
+  <div class="glow" id="glow"></div>
+
+  <div class="stage">
+    <h1 id="text">I'm awesome</h1>
+    <p class="caption">est. today</p>
+  </div>
+
+  <script>
+    const stage = document.querySelector('.stage');
+    const text = document.getElementById('text');
+    const glow = document.getElementById('glow');
+
+    window.addEventListener('mousemove', (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+
+      glow.style.left = x + 'px';
+      glow.style.top = y + 'px';
+
+      const rotateX = ((y / window.innerHeight) - 0.5) * -12;
+      const rotateY = ((x / window.innerWidth) - 0.5) * 12;
+      text.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      text.style.transform = 'rotateX(0) rotateY(0)';
+    });
+  </script>
+
+</body>
+</html>
